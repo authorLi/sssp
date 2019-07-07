@@ -6,6 +6,7 @@ import javax.persistence.*;
  * @author mycclee
  * @createTime 2019/7/7 11:24
  */
+@Cacheable
 @Table(name = "SSSP_DEPARTMENTS")
 @Entity
 public class Department {

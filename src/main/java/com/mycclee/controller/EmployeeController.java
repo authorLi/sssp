@@ -1,13 +1,12 @@
 package com.mycclee.controller;
 
 import com.mycclee.entity.Employee;
+import com.mycclee.service.DepartmentService;
 import com.mycclee.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -22,6 +21,8 @@ public class EmployeeController {
 
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private DepartmentService departmentService;
 
     @RequestMapping("/emps")
     public String list(@RequestParam(value = "pageNum",required = false,defaultValue = "1") Integer pageNumStr,
@@ -44,5 +45,33 @@ public class EmployeeController {
         }
         map.put("info",page);
         return "emp/list";
+    }
+
+    @GetMapping("/emp")
+    public String input(Map<String,Object> map){
+        map.put("departments",departmentService.getAll());
+        map.put("employee",new Employee());
+        return "emp/input";
+    }
+
+    /**
+     *
+     * @param lastName
+     * @return 如果可用返回0，不可用则返回1
+     */
+    @PostMapping(value = "/ajaxValidateLastName")
+    @ResponseBody
+    public String validateLastName(@RequestParam(value = "lastName",required = true) String lastName){
+        Employee employee = employeeService.getByLastName(lastName);
+        if (employee == null){
+            return "0";
+        }
+        return "1";
+    }
+
+    @PostMapping("/emp")
+    public String save(Employee employee){
+        employeeService.save(employee);
+        return "redirect:emps/";
     }
 }

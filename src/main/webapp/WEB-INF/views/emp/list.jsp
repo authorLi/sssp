@@ -42,8 +42,8 @@
                     <fmt:formatDate value="${emp.createTime }" pattern="yyyy-MM-dd hh:mm:ss" />
                 </th>
                 <th>${emp.department.departName }</th>
-                <th><a href="#" /> </th>
-                <th><a href="#" /> </th>
+                <th><a href="#" >Edit</a> </th>
+                <th><a href="#" >Delete</a> </th>
             </tr>
         </c:forEach>
         <tr>
