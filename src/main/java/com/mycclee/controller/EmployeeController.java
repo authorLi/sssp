@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.Map;
 
 /**
@@ -36,7 +38,11 @@ public class EmployeeController {
         }
 
         Page<Employee> page = employeeService.getPage(pageNum,5);
-        map.put("page",page);
+        System.out.println(page.getNumberOfElements());
+        if (page == null || page.getNumberOfElements() == 0){
+            page = null;
+        }
+        map.put("info",page);
         return "emp/list";
     }
 }

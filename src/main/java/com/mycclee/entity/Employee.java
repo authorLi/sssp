@@ -63,7 +63,7 @@ public class Employee {
     }
 
     @JoinColumn(name = "department_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     public Department getDepartment() {
         return department;
     }
