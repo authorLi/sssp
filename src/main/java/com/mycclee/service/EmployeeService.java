@@ -21,7 +21,7 @@ public class EmployeeService {
     @Transactional(readOnly = true)
     public Page<Employee> getPage(Integer pageNum,Integer pageSize){
 
-        PageRequest pageRequest = new PageRequest(pageNum - 1,pageSize);
+        PageRequest pageRequest = PageRequest.of(pageNum - 1,pageSize);
 
         return employeeRepository.findAll(pageRequest);
     }
