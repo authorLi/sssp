@@ -72,6 +72,29 @@ public class EmployeeController {
     @PostMapping("/emp")
     public String save(Employee employee){
         employeeService.save(employee);
-        return "redirect:emps/";
+        return "redirect:/emps";
+    }
+
+    @GetMapping("/emp/{id}")
+    public String input(@PathVariable("id") Integer id,Map<String,Object> map){
+        Employee employee = employeeService.getEmployeeById(id);
+        map.put("employee",employee);
+        map.put("departments",departmentService.getAll());
+        return "emp/input";
+    }
+
+    @PutMapping("/emp/{id}")
+    public String update(Employee employee){
+        employeeService.save(employee);
+        return "redirect:/emps";
+    }
+
+    @ModelAttribute
+    public void getEmployee(@RequestParam(value = "id",required = false) Integer id,Map<String,Object> map){
+        if (null != id){
+            Employee employee = employeeService.getEmployeeById(id);
+            employee.setDepartment(null);
+            map.put("employee",employee);
+        }
     }
 }

@@ -10,4 +10,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface EmployeeRepository extends JpaRepository<Employee,Integer> {
 
     Employee getByLastName(String lastName);
+
+    Employee getById(Integer id);
+
+    void deleteById(Integer id);
 }

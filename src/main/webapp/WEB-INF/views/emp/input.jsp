@@ -7,19 +7,28 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <title>员工添加</title>
-    <script src="webjars/jquery/3.3.1/jquery.min.js"></script>
+    <script src="../webjars/jquery/3.3.1/jquery.min.js"></script>
     <script>
         $(function () {
             $('#lastName').change(function () {
                 var val = $(this).val();
                 val = $.trim(val);
+                $(this).val(val);
+
+                //改回原用户名可用
+                var oldName = $("#old_lastName").val();
+                oldName = $.trim(oldName);
+                if (oldName != null && oldName != "" && oldName == val){
+                    alert("用户名可用");
+                    return ;
+                }
 
                 var url = "${pageContext.request.contextPath }/ajaxValidateLastName";
                 var args = {"lastName":val,"date":new Date()};
-
                 $.post(url,args,function (data) {
                     if (data == "0"){
                         alert("用户名可用");
@@ -34,7 +43,16 @@
     </script>
 </head>
 <body>
-<form:form action="${pageContext.request.contextPath }/emp" method="post" modelAttribute="employee">
+<c:set value="${pageContext.request.contextPath }/emp" var="url"></c:set>
+<c:if test="${employee.id != null }">
+    <c:set value="${pageContext.request.contextPath }/emp/${employee.id }" var="url"></c:set>
+</c:if>
+<form:form action="${url }" method="post" modelAttribute="employee">
+    <c:if test="${employee.id != null }">
+        <input type="hidden" id="old_lastName" value="${employee.lastName }">
+        <form:hidden path="id" />
+        <input type="hidden" name="_method" value="PUT" />
+    </c:if>
     LastName:<form:input path="lastName" id="lastName" /><br/>
     Email:<form:input path="email" /><br/>
     Birth:<form:input path="birth" /><br/>

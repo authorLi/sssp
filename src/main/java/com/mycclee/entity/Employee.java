@@ -21,6 +21,12 @@ public class Employee {
     private Date createTime;
     private Department department;
 
+    public Employee(){}
+
+    public Employee(Integer id){
+        this.id = id;
+    }
+
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     public Integer getId() {

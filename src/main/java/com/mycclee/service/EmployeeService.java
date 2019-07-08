@@ -3,6 +3,7 @@ package com.mycclee.service;
 import com.mycclee.entity.Employee;
 import com.mycclee.repository.EmployeeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,10 @@ public class EmployeeService {
 
     @Transactional
     public void save(Employee employee){
-        //设置创建时间
-        employee.setCreateTime(new Date());
+        if(null == employee.getId()){
+            //设置创建时间
+            employee.setCreateTime(new Date());
+        }
         employeeRepository.saveAndFlush(employee);
     }
 
@@ -38,5 +41,9 @@ public class EmployeeService {
     @Transactional(readOnly = true)
     public Employee getByLastName(String lastName){
         return employeeRepository.getByLastName(lastName);
+    }
+
+    public Employee getEmployeeById(Integer id){
+        return employeeRepository.getById(id);
     }
 }
