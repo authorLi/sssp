@@ -11,8 +11,27 @@
 <html>
 <head>
     <title>员工列表</title>
+    <script src="../webjars/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $(function () {
+            $('.delete').click(function () {
+                var label = $(this).next(":hidden").val();
+                var flag = confirm("确定要删除" + label + "的信息吗?");
+                if (flag) {
+                    var url = $(this).attr("href");
+                    $('#_form').attr("action",url);
+                    $('#_method').val("DELETE");
+                    $('#_form').submit();
+                }
+            });
+        })
+    </script>
 </head>
 <body>
+
+<form method="post" id="_form">
+    <input type="hidden" id="_method" name="_method" />
+</form>
 
 <c:if test="${info eq null || info.numberOfElements eq 0}">
     没有任何记录
@@ -43,7 +62,10 @@
                 </th>
                 <th>${emp.department.departName }</th>
                 <th><a href="${pageContext.request.contextPath }/emp/${emp.id }" >Edit</a> </th>
-                <th><a href="#" >Delete</a> </th>
+                <th>
+                    <a href="${pageContext.request.contextPath }/emp/${emp.id }" class="delete" onclick="return false">Delete</a>
+                    <input type="hidden" value="${emp.lastName }" />
+                </th>
             </tr>
         </c:forEach>
         <tr>

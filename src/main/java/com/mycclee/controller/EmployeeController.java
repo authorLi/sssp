@@ -97,4 +97,10 @@ public class EmployeeController {
             map.put("employee",employee);
         }
     }
+
+    @DeleteMapping("/emp/{id}")
+    public String delete(@PathVariable("id") Integer id){
+        employeeService.deleteEmployee(id);
+        return "redirect:/emps";
+    }
 }
